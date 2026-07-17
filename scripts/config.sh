@@ -64,6 +64,16 @@ LOG_RSC="${OUTPUT_DIR}/geoip-ru-log.rsc"
 ADDRESS_LIST="GEOIP_RU"
 COMMENT="GEOIP_RU_Auto"
 
+###############################################################################
+# META
+###############################################################################
+
+META_ADDRESS_LIST="GEOIP_RU_META"
+META_ADDRESS="255.255.255.255"
+
+NEW_META_RSC="${TMP_DIR}/geoip-meta-new.rsc"
+META_RSC="${OUTPUT_DIR}/geoip-meta.rsc"
+
 #
 # Validation
 #
