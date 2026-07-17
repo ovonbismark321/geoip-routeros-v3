@@ -1,0 +1,87 @@
+name: Update GEOIP_RU
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: "15 3 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create working directories
+        run: |
+          mkdir -p output
+          mkdir -p tmp
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Download sing-box
+        run: |
+          SINGBOX_VERSION="1.12.0"
+
+          wget -q \
+            "https://github.com/SagerNet/sing-box/releases/download/v${SINGBOX_VERSION}/sing-box-${SINGBOX_VERSION}-linux-amd64.tar.gz"
+
+          tar -xzf "sing-box-${SINGBOX_VERSION}-linux-amd64.tar.gz"
+
+          sudo mv "sing-box-${SINGBOX_VERSION}-linux-amd64/sing-box" /usr/local/bin/
+
+          rm -rf "sing-box-${SINGBOX_VERSION}-linux-amd64"
+          rm -f "sing-box-${SINGBOX_VERSION}-linux-amd64.tar.gz"
+
+          sing-box version
+
+      - name: Check Shell scripts syntax
+        run: |
+          for f in scripts/*.sh; do
+            echo "Checking $f"
+            bash -n "$f"
+          done
+
+      - name: Check Python syntax
+        run: |
+          python3 -m py_compile scripts/extract_ipv4.py
+
+      - name: Make scripts executable
+        run: chmod +x scripts/*.sh
+
+      - name: Generate TXT
+        run: ./scripts/generate_txt.sh
+
+      - name: Generate DIFF
+        run: ./scripts/generate_diff.sh
+
+      - name: Generate RouterOS (.rsc) files
+        run: ./scripts/generate_rsc.sh
+
+      - name: Finalize update
+        run: ./scripts/finalize.sh
+
+      - name: Commit changes
+        run: |
+          if git diff --quiet; then
+            echo "No changes detected."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add .
+
+          git commit -m "Update GEOIP_RU"
+
+          git push
