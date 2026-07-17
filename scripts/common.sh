@@ -177,3 +177,48 @@ generate_rsc() {
 cleanup_tmp() {
     clear_state
 }
+
+###############################################################################
+# Version 3 support
+###############################################################################
+
+VERSION_FILE="output/geoip.version"
+
+VERSION_FORMAT=3
+CURRENT_GENERATION=1
+PREVIOUS_GENERATION=0
+
+load_version() {
+
+    if [[ ! -f "$VERSION_FILE" ]]; then
+        CURRENT_GENERATION=1
+        PREVIOUS_GENERATION=0
+        return
+    fi
+
+    local generation
+
+    generation=$(grep '^generation=' "$VERSION_FILE" | cut -d= -f2)
+
+    if [[ "$generation" =~ ^[0-9]+$ ]]; then
+        PREVIOUS_GENERATION=$generation
+        CURRENT_GENERATION=$((generation + 1))
+    else
+        echo "ERROR: Invalid generation in $VERSION_FILE"
+        exit 1
+    fi
+}
+
+write_version() {
+
+    local prefixes="$1"
+    local created="$2"
+
+    cat > "$VERSION_FILE" <<EOF
+version=$VERSION_FORMAT
+generation=$CURRENT_GENERATION
+previous=$PREVIOUS_GENERATION
+prefixes=$prefixes
+created=$created
+EOF
+}
