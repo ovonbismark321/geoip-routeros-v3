@@ -25,6 +25,14 @@ load_state
 
 #
 # ------------------------------------------------------------
+# Load generation
+# ------------------------------------------------------------
+#
+
+load_version
+
+#
+# ------------------------------------------------------------
 # Verify generated files
 # ------------------------------------------------------------
 #
@@ -46,7 +54,7 @@ require_file "${NEW_DEL_RSC}"
 
 info "Generating geoip-ru-log.rsc..."
 
-UTC_TIME="$(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+UTC_TIME="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 
 {
     echo ":local msg"
@@ -120,6 +128,20 @@ mv -f "${NEW_DEL_RSC}" "${DEL_RSC}"
 require_file "${RSC_FILE}"
 require_file "${ADD_RSC}"
 require_file "${DEL_RSC}"
+
+#
+# ------------------------------------------------------------
+# Generate geoip.version
+# ------------------------------------------------------------
+#
+
+info "Generating geoip.version..."
+
+PREFIX_COUNT=$(wc -l < "${TXT_FILE}")
+
+write_version "${PREFIX_COUNT}" "${UTC_TIME}"
+
+require_file "${VERSION_FILE}"
 
 #
 # ------------------------------------------------------------
