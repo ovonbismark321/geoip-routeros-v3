@@ -75,3 +75,22 @@ generate_rsc \
 require_file "${NEW_DEL_RSC}"
 
 info "RouterOS RSC generation completed successfully."
+
+#
+# ------------------------------------------------------------
+# Generate META RSC
+# ------------------------------------------------------------
+#
+
+info "Generating geoip-meta-new.rsc..."
+
+{
+    printf "${RSC_HEADER_TEMPLATE}" "${CURRENT_GENERATION}"
+
+    echo "/ip firewall address-list"
+
+    echo "add list=${META_ADDRESS_LIST} address=${META_ADDRESS} comment=\"gen=${CURRENT_GENERATION}\""
+
+} > "${NEW_META_RSC}"
+
+require_file "${NEW_META_RSC}"
