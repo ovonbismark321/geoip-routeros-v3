@@ -129,6 +129,10 @@ require_file "${RSC_FILE}"
 require_file "${ADD_RSC}"
 require_file "${DEL_RSC}"
 
+mv -f "${NEW_META_RSC}" "${META_RSC}"
+
+require_file "${META_RSC}"
+
 #
 # ------------------------------------------------------------
 # Generate geoip.version
