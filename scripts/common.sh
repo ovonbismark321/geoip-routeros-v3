@@ -182,7 +182,7 @@ cleanup_tmp() {
 # Version 3 support
 ###############################################################################
 
-VERSION_FILE="output/geoip.version"
+VERSION_FILE="$OUTPUT_DIR/geoip.version"
 
 VERSION_FORMAT=3
 CURRENT_GENERATION=1
