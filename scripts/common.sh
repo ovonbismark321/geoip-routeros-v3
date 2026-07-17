@@ -148,6 +148,12 @@ load_state() {
 # ------------------------------------------------------------
 #
 
+###############################################################################
+# RouterOS RSC header
+###############################################################################
+
+readonly RSC_HEADER_TEMPLATE=$'# -----------------------------------------------------------------------------\n# GEOIP RouterOS\n# Generation: %s\n# -----------------------------------------------------------------------------\n\n'
+
 generate_rsc() {
 
     local input_file="$1"
@@ -156,6 +162,8 @@ generate_rsc() {
     require_file "${input_file}"
 
     {
+        printf "${RSC_HEADER_TEMPLATE}" "${CURRENT_GENERATION}"
+
         echo "/ip firewall address-list"
 
         while IFS= read -r prefix; do
