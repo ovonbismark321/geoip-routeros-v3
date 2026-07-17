@@ -14,6 +14,12 @@ info "=== Generate RouterOS RSC files ==="
 
 ensure_directories
 
+#
+# ------------------------------------------------------------
+# Load generation
+# ------------------------------------------------------------
+#
+
 load_version
 
 #
