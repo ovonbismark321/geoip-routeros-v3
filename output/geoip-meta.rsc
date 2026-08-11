@@ -1,7 +1,7 @@
 # -----------------------------------------------------------------------------
 # GEOIP RouterOS
-# Generation: 27
+# Generation: 28
 # -----------------------------------------------------------------------------
 
 /ip firewall address-list
-add list=GEOIP_RU_META address=255.255.255.255 comment="gen=27"
+add list=GEOIP_RU_META address=255.255.255.255 comment="gen=28"
