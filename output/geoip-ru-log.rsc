@@ -1,3 +1,3 @@
 :local msg
-:set msg "GEOIP_RU: no changes (2026-09-12T07:52:56Z)"
+:set msg "GEOIP_RU: +16 -6 (2026-09-13T08:15:47Z)"
 :log info $msg
